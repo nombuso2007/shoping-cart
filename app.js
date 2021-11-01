@@ -1,8 +1,24 @@
+if(process.env.NODE_ENV !== "production") {
+  require('dotenv').config()
+}
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose')
+
+// Connect to Mongo
+try {
+  mongoose.connect(process.env.MONGODB_URI || process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }, () =>
+    console.log("connected"));
+} catch (error) {
+  console.log("could not connect");
+}
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
